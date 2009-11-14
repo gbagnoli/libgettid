@@ -12,3 +12,4 @@ config.status
 stamp-h1
 src/.deps
 src/Makefile
+src/test
