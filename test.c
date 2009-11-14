@@ -4,8 +4,9 @@
 #include <linux/unistd.h>
 #include <sys/syscall.h>
 #include <sys/time.h>
+#include <libgettid.h>
 
-#define TNUM 2
+#define TNUM 20
 
 void *thread_body(void *arg)
 {

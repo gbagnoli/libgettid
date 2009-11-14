@@ -1,17 +1,17 @@
 #CFLAGS+= -O3 -march=core2 -floop-interchange -floop-strip-mine -floop-block
-CFLAGS= -g
+CFLAGS= -g -I.
 LDFLAGS+= -lpthread 
 
-all: main libgettid.o libgettid.so
+all: libgettid.so 
 
-main: main.o
-	gcc $(CFLAGS) $(LDFLAGS) -o main main.o
+test: libgettid.so test.o
+	gcc $(CFLAGS) -L. -l gettid $(LDFLAGS) -o test test.o
 
 libgettid.so: 
-	gcc -fPIC  -shared -o libgettid.so libgettid.c -ldl
+	gcc -I. -fPIC  -shared -o libgettid.so libgettid.c -ldl
 
 .PHONY:clean
 clean:
-	rm -f ./main
+	rm -f ./test
 	rm -f ./*.o ./*.so
 
