@@ -9,6 +9,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([linux/unistd.h sys/syscall.h])
 AC_CHECK_LIB([pthread], [pthread_create])
 AC_CHECK_LIB([dl], [dlsym], [DLLIB=-ldl])
+AC_SUBST([DLLIB])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
