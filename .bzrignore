@@ -5,3 +5,10 @@
 ./config.h.in
 ./configure
 src/Makefile.in
+Makefile
+config.h
+config.log
+config.status
+stamp-h1
+src/.deps
+src/Makefile
