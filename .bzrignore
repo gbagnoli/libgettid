@@ -19,3 +19,4 @@ m4
 src/.libs
 src/libgettid.la
 src/libgettid.lo
+./libtool
