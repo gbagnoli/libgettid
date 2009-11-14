@@ -13,3 +13,6 @@ stamp-h1
 src/.deps
 src/Makefile
 src/test
+./libgettid-0.1.tar.bz2
+./libgettid-0.1.tar.gz
+m4
