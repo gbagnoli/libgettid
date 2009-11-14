@@ -94,9 +94,17 @@ int gettid(pthread_t thread)
 	return GETTID_E_UNIMPLEMENTED;
 }
 
+static char *gettid_errors[] = {
+	"Not Implemented"
+};
+static char *gettid_unknown_error = "Unknown error";
+
 char *gettid_strerror(int errno)
 {
-	return "Uhm";
+	if ((errno < 0) || (errno > (int) (sizeof(gettid_errors) / sizeof (*gettid_errors))) ) {
+		return gettid_unknown_error;
+	}
+	return gettid_errors[errno];
 }
 
 /* vim: set ts=8 noexpandtab shiftwidth=8: */
