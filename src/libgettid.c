@@ -7,66 +7,44 @@
 #include <linux/unistd.h>
 #include <sys/syscall.h>
 #include <libgettid.h>
+#include "libgettid_private.h"
 
-#define SHMKEY	3301
-#define SHMSIZE 4096
-
-typedef int (*real_pthread_create_fn)(pthread_t *thread, 
-					const pthread_attr_t *attr,
-					void *(*start_routine) (void*),
-				  	void *arg);
-
-static real_pthread_create_fn real_pthread_create = NULL;
-
-struct thread_id {
-	pid_t 		pid;
-	pid_t 		tid;
-	pthread_t 	pth;
-};
-
-struct create_args {
-	void *(*routine)(void*);
-	void *arg;
-};
-
+static struct thread_id *threads_list;
 
 static void
 libgettid_init(void)
 {
 	if (!real_pthread_create)
 		real_pthread_create = dlsym(RTLD_NEXT, "pthread_create");
-
-/*	int shmid;
-	shmid = shmget(SHMKEY, SHMZ, 0666);
-	if (shmid < 0)
-		return;
-	
-	head = shmat(shmid, NULL, 0);
-	if ((intptr_t)head < 0)
-		head = NULL;
-*/		
 }
 
 static void *
 fake_start_routine(void *arg)
 {
 	struct create_args *args = (struct create_args*) arg;
-	struct thread_id TID;
-	TID.pid = getpid();
-	TID.tid = syscall(__NR_gettid);
-	TID.pth = pthread_self();
 	void *retval = NULL;
+	pid_t tid;
+	int res;
+	pthread_t self;
 
 	if (!args || !args->routine) {
 		fprintf(stderr, "Fake routine called with NULL args\n");
 		return NULL;
 	}
-	fprintf(stderr, "In fake_start_routine(@%p): pthread_t %d PID %d TID %d\n", 
-			args->routine,
-			(int) TID.pth,
-			TID.pid, TID.tid);
-	retval = args->routine(args->arg);
 
+	tid = syscall(__NR_gettid);
+	self = pthread_self();
+	res = list_add(&threads_list, tid, self);
+	if (res)
+		fprintf(stderr, "[fake_routine]:%s", gettid_strerror(res));
+	if (threads_list == NULL)
+		fprintf(stderr, "[fake_routine]: threads_list is null\n");
+
+	retval = args->routine(args->arg);
+	
+//	list_remove(threads_list, self);
+	if (res)
+		fprintf(stderr, "[fake_routine]:%s", gettid_strerror(res));
 	free(arg);
 
 	return retval; 
@@ -89,13 +67,25 @@ pthread_create(pthread_t *thread,
 	return error;
 }
 
-int gettid(pthread_t thread)
+// API functions
+int gettid(pthread_t thread, pid_t *tid)
 {
-	return GETTID_E_UNIMPLEMENTED;
+	thread_id_t *info;
+	if (threads_list == NULL) {
+		fprintf(stderr,"[gettid]:threads_list is null\n");
+	}
+	info = list_find(threads_list, thread);
+	if (!info) {
+		return GETTID_E_THREADNOTFOUND;
+	}		
+	*tid = info->tid;
+	return 0;
 }
 
 static char *gettid_errors[] = {
-	"Not Implemented"
+	"Operation successful",
+	"Method not implemented",
+	"Thread not found"
 };
 static char *gettid_unknown_error = "Unknown error";
 

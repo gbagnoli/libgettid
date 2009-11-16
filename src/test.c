@@ -15,6 +15,8 @@ void *thread_body(void *arg)
 	pid = getpid();
 	tid = syscall(__NR_gettid);
 	printf("[thread_body] PID: %d, TID: %d\n", pid, tid);
+	sleep(2);
+	printf("[thread_body] PID: %d, TID: %d Exiting.\n", pid, tid);
 	return NULL;
 }
 
@@ -22,14 +24,19 @@ int main (int argc, char *argv[])
 {
 
 	pthread_t threads[TNUM];
-	int i;
+	int i,res;
+	pid_t tid;
 	
 	for (i=0; i<TNUM; i++)
 	{
 		pthread_create(&threads[i], NULL, thread_body, NULL);
-//		printf("[main][%d]: pthread_t as index: %d\n",i, (int) threads[i]); 
+		sleep(1);
+		if ( (res = gettid(threads[i], &tid)) != 0)
+			fprintf(stderr, "%s\n", gettid_strerror(res));
+		else
+			printf("[main]: last-created tid: %d\n",tid); 
 	}
-	
+
 	for (i=0; i<TNUM; i++)
 	{
 		pthread_join(threads[i], NULL);

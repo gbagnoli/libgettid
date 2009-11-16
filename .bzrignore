@@ -20,3 +20,4 @@ src/.libs
 src/libgettid.la
 src/libgettid.lo
 ./libtool
+src/list.lo

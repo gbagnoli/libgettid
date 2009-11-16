@@ -24,7 +24,7 @@
  *  @return
  *    0 on success, otherwise an error code
  */
-int gettid(pthread_t thread);
+int gettid(pthread_t thread, pid_t *tid);
 
 /** Convert an error returned from @gettid function to an human redable
  *  string describing the error occurred
@@ -40,5 +40,6 @@ char *gettid_strerror(int errno);
 /** @} */
 
 #define GETTID_E_UNIMPLEMENTED 1
+#define GETTID_E_THREADNOTFOUND 2
 
 #endif /* __LIBGETTID_H__ */
