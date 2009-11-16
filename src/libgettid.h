@@ -3,6 +3,10 @@
 #include <sys/types.h>
 #include <pthread.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 /** @addtogroup LIBGETTID Library to get Linux TID from pthread_t 
  *
@@ -41,5 +45,9 @@ char *gettid_strerror(int errno);
 
 #define GETTID_E_UNIMPLEMENTED 1
 #define GETTID_E_THREADNOTFOUND 2
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __LIBGETTID_H__ */
