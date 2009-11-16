@@ -10,6 +10,7 @@
 #include "libgettid_private.h"
 
 static struct thread_id *threads_list;
+pthread_mutex_t list_mtx = PTHREAD_MUTEX_INITIALIZER;
 
 static void
 libgettid_init(void)
@@ -34,17 +35,17 @@ fake_start_routine(void *arg)
 
 	tid = syscall(__NR_gettid);
 	self = pthread_self();
+	pthread_mutex_lock(&list_mtx);
 	res = list_add(&threads_list, tid, self);
-	if (res)
-		fprintf(stderr, "[fake_routine]:%s", gettid_strerror(res));
-	if (threads_list == NULL)
-		fprintf(stderr, "[fake_routine]: threads_list is null\n");
-
+	pthread_mutex_unlock(&list_mtx);
 	retval = args->routine(args->arg);
-	
-//	list_remove(threads_list, self);
-	if (res)
-		fprintf(stderr, "[fake_routine]:%s", gettid_strerror(res));
+
+	if (res == 0)
+	{
+		pthread_mutex_lock(&list_mtx);
+		list_remove(&threads_list, self);
+		pthread_mutex_unlock(&list_mtx);
+	}
 	free(arg);
 
 	return retval; 
@@ -74,7 +75,9 @@ int gettid(pthread_t thread, pid_t *tid)
 	if (threads_list == NULL) {
 		fprintf(stderr,"[gettid]:threads_list is null\n");
 	}
+	pthread_mutex_lock(&list_mtx);
 	info = list_find(threads_list, thread);
+	pthread_mutex_unlock(&list_mtx);
 	if (!info) {
 		return GETTID_E_THREADNOTFOUND;
 	}		

@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-bin_PROGRAMS = test
+noinst_PROGRAMS = test
 lib_LTLIBRARIES = libgettid.la
 include_HEADERS = libgettid.h
 
