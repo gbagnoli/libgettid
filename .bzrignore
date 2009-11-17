@@ -21,3 +21,5 @@ src/libgettid.la
 src/libgettid.lo
 ./libtool
 src/list.lo
+doc/*
+Doxyfile
