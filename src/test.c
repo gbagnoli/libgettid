@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
 	{
 		pthread_create(&threads[i], NULL, thread_body, NULL);
 		sleep(1);
-		if ( (res = gettid(threads[i], &tid)) != 0)
+		if ( (res = pthread_get_tid(threads[i], &tid)) != 0)
 			fprintf(stderr, "%s\n", gettid_strerror(res));
 		else
 			printf("[main]: last-created tid: %d\n",tid); 

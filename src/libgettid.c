@@ -69,7 +69,7 @@ pthread_create(pthread_t *thread,
 }
 
 // API functions
-int gettid(pthread_t thread, pid_t *tid)
+int pthread_get_tid(pthread_t thread, pid_t *tid)
 {
 	thread_id_t *info;
 	if (threads_list == NULL) {

@@ -28,7 +28,7 @@ extern "C"
  *  @return
  *    0 on success, otherwise an error code
  */
-int gettid(pthread_t thread, pid_t *tid);
+int pthread_get_tid(pthread_t thread, pid_t *tid);
 
 /** Convert an error returned from @gettid function to an human redable
  *  string describing the error occurred
