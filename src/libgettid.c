@@ -85,14 +85,14 @@ int pthread_get_tid(pthread_t thread, pid_t *tid)
 	return 0;
 }
 
-static char *gettid_errors[] = {
+static const char *gettid_errors[] = {
 	"Operation successful",
 	"Method not implemented",
 	"Thread not found"
 };
-static char *gettid_unknown_error = "Unknown error";
+static const char *gettid_unknown_error = "Unknown error";
 
-char *gettid_strerror(int errno)
+const char *gettid_strerror(int errno)
 {
 	if ((errno < 0) || (errno > (int) (sizeof(gettid_errors) / sizeof (*gettid_errors))) ) {
 		return gettid_unknown_error;

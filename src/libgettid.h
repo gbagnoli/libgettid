@@ -39,7 +39,7 @@ int pthread_get_tid(pthread_t thread, pid_t *tid);
  *    Pointer to a statically allocated string with a human
  *    readable description of the error coded.
  */
-char *gettid_strerror(int errno);
+const char *gettid_strerror(int errno);
 
 /** @} */
 
