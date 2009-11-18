@@ -73,7 +73,7 @@ int pthread_get_tid(pthread_t thread, pid_t *tid)
 {
 	thread_id_t *info;
 	if (threads_list == NULL) {
-		fprintf(stderr,"[gettid]:threads_list is null\n");
+		return GETTID_E_NOTHREADS;	
 	}
 	pthread_mutex_lock(&list_mtx);
 	info = list_find(threads_list, thread);
@@ -88,7 +88,8 @@ int pthread_get_tid(pthread_t thread, pid_t *tid)
 static const char *gettid_errors[] = {
 	"Operation successful",
 	"Method not implemented",
-	"Thread not found"
+	"Thread not found",
+	"Not found, threads list is empty"
 };
 static const char *gettid_unknown_error = "Unknown error";
 

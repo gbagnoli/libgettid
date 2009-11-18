@@ -45,6 +45,7 @@ const char *gettid_strerror(int errno);
 
 #define GETTID_E_UNIMPLEMENTED 1
 #define GETTID_E_THREADNOTFOUND 2
+#define GETTID_E_NOTHREADS 3
 
 #ifdef __cplusplus
 }
