@@ -29,7 +29,7 @@ fake_start_routine(void *arg)
 	pthread_t self;
 
 	if (!args || !args->routine) {
-		fprintf(stderr, "Fake routine called with NULL args\n");
+		fprintf(stderr, "libgettid: Fake routine called with NULL args\n");
 		return NULL;
 	}
 
