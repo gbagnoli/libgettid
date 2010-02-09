@@ -23,7 +23,7 @@ thread_id_t* list_find(thread_id_t *head, pthread_t pth)
 	thread_id_t *p;
 
 	p = head;
-	while (p && p->pth != pth)
+	while (p && (pthread_equal(p->pth, pth)) == 0)
 		p = p->next;
 	return p;
 }
@@ -31,14 +31,14 @@ thread_id_t* list_find(thread_id_t *head, pthread_t pth)
 int list_remove(thread_id_t **head, pthread_t pth)
 {
 	thread_id_t *p,*q;
-	if ((*head)->pth == pth)
+	if (pthread_equal((*head)->pth, pth) != 0)
 	{
 		free(*head);
 		*head = NULL;
 		return 0;
 	}
 	q = p = *head;
-	while (p && p->pth != pth)
+	while (p && (pthread_equal(p->pth, pth)) == 0)
 	{
 	    q = p;
 	    p = p->next;
