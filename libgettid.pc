@@ -1,0 +1,9 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libgettid 
+Description: a library to get TIDs from pthread_t 
+Version: 0.1
+Libs: -lgettid 

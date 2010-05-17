@@ -1,0 +1,9 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libgettid 
+Description: a library to get TIDs from pthread_t 
+Version: @VERSION@
+Libs: -lgettid 
