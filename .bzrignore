@@ -1,6 +1,5 @@
 ./Makefile.in
 ./aclocal.m4
-./build-aux
 ./config.h.in
 src/Makefile.in
 Makefile
