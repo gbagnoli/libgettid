@@ -6,4 +6,7 @@ includedir=@includedir@
 Name: libgettid 
 Description: a library to get TIDs from pthread_t 
 Version: @VERSION@
-Libs: -lgettid 
+Libs: -L${libdir} -lgettid
+Cflags: -I${includedir}
+
+
